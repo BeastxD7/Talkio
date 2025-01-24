@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ws_1 = require("ws");
-const wss = new ws_1.WebSocketServer({ port: 8080 });
+const wss = new ws_1.WebSocketServer({ port: 3000 });
 let userCount = 0;
 wss.on("error", (err) => {
     console.error("WebSocket server error:", err);
@@ -9,11 +9,11 @@ wss.on("error", (err) => {
 wss.on("connection", (socket) => {
     userCount++;
     console.log(`user connected! usercount:#${userCount} `);
-    socket.send("Welcome to the server");
     socket.on("message", (message) => {
         try {
-            console.log(`Received message: ${message}`);
-            socket.send(`server: ${message}`);
+            const parsedMessage = JSON.parse(message.toString());
+            console.log(`Received message: ${parsedMessage.text}`);
+            socket.send(`{"text":"${parsedMessage.text}","type":"received"}`);
         }
         catch (error) {
             console.error("Error handling message:", error);

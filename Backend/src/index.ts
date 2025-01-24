@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 3000 });
 
 let userCount = 0;
 
@@ -11,12 +11,13 @@ wss.on("error", (err) => {
 wss.on("connection", (socket) => {
   userCount++;
   console.log(`user connected! usercount:#${userCount} `);
-  socket.send("Welcome to the server");
-
+  
   socket.on("message", (message) => {
     try {
-      console.log(`Received message: ${message}`);
-      socket.send(`server: ${message}`);
+      
+      const parsedMessage = JSON.parse(message.toString())
+      console.log(`Received message: ${parsedMessage.text}`);
+      socket.send(`{"text":"${parsedMessage.text}","type":"received"}`);
     } catch (error) {
       console.error("Error handling message:", error);
       socket.send("An error occurred while processing your message.");
