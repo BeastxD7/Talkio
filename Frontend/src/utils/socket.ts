@@ -13,7 +13,7 @@ export const connectSocket = (roomId?: string , username?:string): Socket => {
         socket.on("connect", () => {
             console.log("Connected to WebSocket server:", socket?.id);
 
-            // If roomId exists, rejoin the room
+
             if (roomId) {
                 socket?.emit("join-room", {roomId,username});
                 console.log(`Username: ${username}, Rejoining room: ${roomId}`);
@@ -22,7 +22,7 @@ export const connectSocket = (roomId?: string , username?:string): Socket => {
 
         socket.on("disconnect", () => {
             console.log("Disconnected from WebSocket server.");
-            socket = null; // Reset socket to allow reconnection
+            socket = null; 
         });
     }
 
