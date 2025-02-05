@@ -1,106 +1,117 @@
-import { useRef } from "react";
-import {  Socket } from "socket.io-client";
+import { useRef, useEffect } from "react";
+import { Socket } from "socket.io-client";
 import { connectSocket, getSocket } from "../utils/socket";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const Chat = () => {
-  connectSocket()
+  const navigate = useNavigate();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const roomRef = useRef<HTMLInputElement>(null);
 
-const navigate = useNavigate();
 
-  const socket:Socket | null = getSocket()
-  if(!socket){
-    return;
-  }
+  useEffect(() => {
+    connectSocket(); 
 
-  socket.on("connect" , () => {
-    console.log(`Socket connection initialized with ID: ${socket.id}.`); 
-  })
+    const socket: Socket | null = getSocket();
+    if (!socket) {
+      return;
+    }
 
-  socket.on(`join-notify`,(data) => {
-    console.log(data.message);
-  })
+    
+    socket.on("create-room-response", (data) => {
+      console.log(data.message);
+      if (data.message === "Already Room Exists!") {
+        toast.info("Already Room Exists!", {
+          position: 'bottom-right',
+        });
+        return;
+      }
+      navigate(`/chat/${roomRef.current?.value}`);
+    });
 
-  const usernameRef = useRef<HTMLInputElement>(null)
-  const roomRef = useRef<HTMLInputElement>(null)
+    socket.on("join-room-response", (data) => {
+      if (data.message === "Room Doesn't Exists!") {
+        toast.info("Room Doesn't Exist!", {
+          position: 'bottom-right',
+        });
+        return;
+      }
+      navigate(`/chat/${roomRef.current?.value}`);
+    });
+
+    
+    return () => {
+      socket.off("create-room-response");
+      socket.off("join-room-response");
+    };
+  }, [navigate]);
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     const username = usernameRef.current?.value;
     const roomId = roomRef.current?.value;
-    socket.emit("create-room" , {username , roomId} );
-    console.log({
-      data:{
-      type: "create-room",
-      username,
-      roomId
-  }});
+    const socket = getSocket();
 
-  if(roomId){
-    localStorage.setItem("roomId", roomId)
-  }
-    
-    socket.on("create-room-response", (data) => {
-      console.log(data.message);
-      
-      if(data.message == "Already Room Exists!"){
-        alert("Already Room Exists!")
-        return;
+    if (socket && roomId) {
+      socket.emit("create-room", { username, roomId });
+      console.log({ data: { type: "create-room", username, roomId } });
+
+      if (roomId) {
+        localStorage.setItem("roomId", roomId);
       }
-      navigate(`/chat/${roomId}`)
-    })
-    
-    
-  }
+    }
+  };
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
     const username = usernameRef.current?.value;
     const roomId = roomRef.current?.value;
-    socket.emit("join-room" , {username , roomId} )
-    console.log({
-      data:{
-        type: "join-room",
-        username,roomId,
-  }}
-);
+    const socket = getSocket();
 
-  if(roomId && username){
-    localStorage.setItem("roomId", roomId)
-    localStorage.setItem("username", username)
-  }
+    if (socket && roomId && username) {
+      socket.emit("join-room", { username, roomId });
+      console.log({ data: { type: "join-room", username, roomId } });
 
-  socket.on("join-room-response", (data) => {
-    if(data.message == "Room Doesn't Exists!"){
-      alert("Room Doesn't Exists!")
-      return;
+      localStorage.setItem("roomId", roomId);
+      localStorage.setItem("username", username);
     }
-
-    navigate(`/chat/${roomId}`)
-  })
-  }
+  };
 
   return (
     <div className="w-screen h-screen bg-gray-950 text-white">
-        <div className=" w-[95%]  mx-auto h-full flex flex-col justify-center items-center">
-          <div className="text-white flex gap-3 flex-col items-center justify-center max-lg:w-full lg:w-[50%]  h-[50%] rounded-lg bg-gray-600/30">
-            <div className="w-full flex justify-center">
-              <input  ref={usernameRef} className="outline-none border border-gray-500 px-3 w-[90%] lg:w-[50%] py-2 bg-gray-700/50 rounded-lg text-md" type="text" placeholder="username" />
-            </div>
-          
-            <div className="flex flex-col w-full flex items-center">
-            <input ref={roomRef} className="outline-none border border-gray-500 px-3 w-[90%] lg:w-[50%] py-2 bg-gray-700/50 rounded-lg text-md" type="text" placeholder="Room ID" />  
-            <div className="flex gap-3 mt-3">
-            <button onClick={handleJoin} className="bg-blue-600 px-3 py-2 rounded-md cursor-pointer ">Join Room</button>
-            <button onClick={handleCreate} className="bg-blue-600 px-3 py-2 rounded-md cursor-pointer ">Create Room</button>
-            </div>
-            </div>
-          
+      <ToastContainer />
+      <div className="w-[95%] mx-auto h-full flex flex-col justify-center items-center">
+        <div className="text-white flex gap-3 flex-col items-center justify-center max-lg:w-full lg:w-[50%] h-[50%] rounded-lg bg-gray-600/30">
+          <div className="w-full flex justify-center">
+            <input
+              ref={usernameRef}
+              className="outline-none border border-gray-500 px-3 w-[90%] lg:w-[50%] py-2 bg-gray-700/50 rounded-lg text-md"
+              type="text"
+              placeholder="username"
+            />
           </div>
 
+          <div className="flex flex-col w-full items-center">
+            <input
+              ref={roomRef}
+              className="outline-none border border-gray-500 px-3 w-[90%] lg:w-[50%] py-2 bg-gray-700/50 rounded-lg text-md"
+              type="text"
+              placeholder="Room ID"
+            />
+            <div className="flex gap-3 mt-3">
+              <button onClick={handleJoin} className="bg-blue-600 px-3 py-2 rounded-md cursor-pointer">
+                Join Room
+              </button>
+              <button onClick={handleCreate} className="bg-blue-600 px-3 py-2 rounded-md cursor-pointer">
+                Create Room
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
