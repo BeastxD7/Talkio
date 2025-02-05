@@ -1,9 +1,12 @@
 import { useRef } from "react";
-import { io, Socket } from "socket.io-client";
+import {  Socket } from "socket.io-client";
 import { connectSocket, getSocket } from "../utils/socket";
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
   connectSocket()
+
+const navigate = useNavigate();
 
   const socket:Socket | null = getSocket()
   if(!socket){
@@ -32,10 +35,22 @@ const Chat = () => {
       username,
       roomId
   }});
+
+  if(roomId){
+    localStorage.setItem("roomId", roomId)
+  }
     
     socket.on("create-room-response", (data) => {
-      console.log(data);
+      console.log(data.message);
+      
+      if(data.message == "Already Room Exists!"){
+        alert("Already Room Exists!")
+        return;
+      }
+      navigate(`/chat/${roomId}`)
     })
+    
+    
   }
 
   const handleJoin = (e: React.FormEvent) => {
@@ -47,15 +62,26 @@ const Chat = () => {
       data:{
         type: "join-room",
         username,roomId,
-  }});
+  }}
+);
+
+  if(roomId && username){
+    localStorage.setItem("roomId", roomId)
+    localStorage.setItem("username", username)
+  }
 
   socket.on("join-room-response", (data) => {
-    console.log(data.message);
+    if(data.message == "Room Doesn't Exists!"){
+      alert("Room Doesn't Exists!")
+      return;
+    }
+
+    navigate(`/chat/${roomId}`)
   })
   }
 
   return (
-    <div className="w-screen h-screen bg-gray-950 ">
+    <div className="w-screen h-screen bg-gray-950 text-white">
         <div className=" w-[95%]  mx-auto h-full flex flex-col justify-center items-center">
           <div className="text-white flex gap-3 flex-col items-center justify-center max-lg:w-full lg:w-[50%]  h-[50%] rounded-lg bg-gray-600/30">
             <div className="w-full flex justify-center">
