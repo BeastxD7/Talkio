@@ -18,8 +18,8 @@ const io = new socket_io_1.Server(httpServer, {
     }
 });
 const rooms = [];
-app.get('/health', (req, res) => {
-    res.status(200).json({ message: 'Server is healthy!' });
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Server is running!' });
 });
 io.on("connection", (socket) => {
     console.log(`socket Connected with ID: ${socket.id}`);
