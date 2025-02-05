@@ -4,7 +4,7 @@ let socket: Socket | null = null;
 
 export const connectSocket = (roomId?: string , username?:string): Socket => {
     if (!socket) {
-        socket = io("http://localhost:3000", {
+        socket = io("https://talkio-ssy0.onrender.com", {
             reconnection: true, // Enables auto-reconnection
             reconnectionAttempts: 5, // Retry 5 times before failing
             reconnectionDelay: 2000, // Wait 2 seconds before retrying
