@@ -2,9 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Talkio by Beast </title>
+    <meta name="description" content="Talkio is a real-time, room-based chat application built with WebSockets, enabling seamless communication with unique chat rooms." />
+    <meta name="keywords" content="Talkio, chat app, real-time chat, WebSockets, room-based chat, Socket.io" />
+    <meta name="author" content="Shashank" />
+
+    <!-- Open Graph Meta Tags (for better social media sharing) -->
+    <meta property="og:title" content="Talkio by Beast - Real-time Chat App" />
+    <meta property="og:description" content="Join or create chat rooms and experience seamless real-time messaging with Talkio, powered by WebSockets." />
+    <meta property="og:image" content="/preview-image.png" />
+    <meta property="og:url" content="https://talkiobybeast.vercel.app" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card for social previews -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Talkio - Real-time Room-Based Chat App" />
+    <meta name="twitter:description" content="Experience seamless real-time chat with Talkio. Create or join chat rooms instantly!" />
+    <meta name="twitter:image" content="/preview-image.png" />
+
+    <!-- Canonical URL (for SEO) -->
+    <link rel="canonical" href="https://talkiobybeast.vercel.app" />
+
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Talkio by Beast",
+      "description": "Real-time chat app with room-based communication powered by WebSockets.",
+      "url": "https://talkiobybeast.vercel.app",
+      "image": "https://talkiobybeast.vercel.app/preview-image.png",
+      "author": {
+        "@type": "Person",
+        "name": "Shashank"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import { connectSocket, getSocket } from "../utils/socket";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { MessageCircle, Users, ArrowRight } from "lucide-react";
 
@@ -78,12 +78,12 @@ const Chat = () => {
       {/* Navbar */}
       <nav className="fixed w-full z-50 bg-black/80 backdrop-blur-lg border-b border-gray-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-          <div className="flex items-center space-x-2">
+          <Link to={"/"} className="flex items-center space-x-2">
             <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-blue-500" />
             <span className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
               Talkio
             </span>
-          </div>
+          </Link>
         </div>
       </nav>
 

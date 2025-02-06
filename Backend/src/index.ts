@@ -29,8 +29,6 @@ io.on("connection", (socket) => {
         console.log(`username: ${username}, Recieved Message: ${message}`);
         io.to(roomId).emit("message" , {message , username})
         console.log('message event emmited to client.');
-        
-
     })
 
     socket.on("create-room" , ({username , roomId}) => {
@@ -38,7 +36,6 @@ io.on("connection", (socket) => {
             socket.emit("create-room-response", {message: "Already Room Exists!"});
             return;
         }
-
         socket.join(roomId);
         rooms.push(roomId);
         socket.emit("create-room-response", {message: "Room Created Succesfull"});
@@ -55,12 +52,8 @@ io.on("connection", (socket) => {
             console.log(io.sockets.adapter.rooms);
             return;
         }
-
-        socket.emit("join-room-response", {message: "Room Doesn't Exists!"});
-        
+        socket.emit("join-room-response", {message: "Room Doesn't Exists!"}); 
     })
-
-
 
     socket.on("disconnect", () => {
         console.log(`Socket Disconnected: ${socket.id}`);
@@ -78,8 +71,6 @@ io.on("connection", (socket) => {
         });
     });
     
-
-
 });
 
 httpServer.listen(3000, () => {

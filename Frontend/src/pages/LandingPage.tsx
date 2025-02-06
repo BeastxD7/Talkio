@@ -46,9 +46,9 @@ const LandingPage = () => {
 
           <div className="relative max-w-7xl mx-auto px-6 h-screen flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             <div className="lg:w-1/2 space-y-6 sm:space-y-8 pt-16 lg:pt-0 text-center lg:text-left">
-              <div className="flex items-center space-x-2 mb-6 justify-center lg:justify-start">
-                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 animate-pulse" />
-                <span className="text-yellow-500 font-medium text-sm sm:text-base">Instant Chat Platform</span>
+              <div className="flex bg-gray-500/60 py-2 px-4 rounded-full w-fit items-center space-x-2 mb-6 justify-center lg:justify-start">
+                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-200 animate-pulse" />
+                <span className="text-blue-200 font-medium text-sm sm:text-base">Instant Chat Platform</span>
               </div>
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight">
                 Quick Chats
@@ -107,12 +107,9 @@ const LandingPage = () => {
                     <ChatMessage user="Alex" message="Just wanted to discuss the latest tech trends! 💻" />
                     <ChatMessage
                       user="Sarah"
-                      message="Perfect timing! I've been exploring AI lately. Have you tried any cool AI tools? 🤖"
+                      message="Perfect timing! I've been exploring AI lately."
                     />
-                    <ChatMessage
-                      user="Alex"
-                      message="Yes! Been experimenting with some new chatbots. They're getting incredibly smart! 🚀"
-                    />
+
                   </div>
                   <div className="mt-4">
                     <div className="relative">
@@ -180,15 +177,15 @@ const LandingPage = () => {
             </span>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 text-center md:text-left">
-            <div className="flex space-x-6">
+            {/* <div className="flex space-x-6">
               <a href="#" className="hover:text-blue-400 transition-colors text-sm sm:text-base">
                 Privacy Policy
               </a>
               <a href="#" className="hover:text-blue-400 transition-colors text-sm sm:text-base">
                 Terms of Service
               </a>
-            </div>
-            <div className="text-gray-500 text-sm sm:text-base">© 2024 Talkio. All rights reserved.</div>
+            </div> */}
+            <div className="text-gray-500 text-sm sm:text-base">© {new Date().getFullYear()} Talkio. All rights reserved.</div>
           </div>
         </div>
       </footer>

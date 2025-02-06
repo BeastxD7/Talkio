@@ -117,7 +117,7 @@ const ChatRoom = () => {
           {/* Chat Messages */}
           <div
             ref={chatRef}
-            className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
+            className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin min-lg:max-w-[80%]  scrollbar-thumb-gray-700 scrollbar-track-transparent"
           >
             {messages?.map((data, index) => (
               <div key={index}>
